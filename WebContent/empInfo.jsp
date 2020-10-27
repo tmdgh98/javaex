@@ -24,6 +24,26 @@
 				let data = JSON.parse(xhtp.responseText);
 				console.log(data);
 				console.log(data[0].id)
+				
+				let div = document.createElement('div');
+				div.innerHTML="";
+				let first = true;
+				for(a in data[0]){
+					div.innerHTML += a + " "; 
+					let input = document.createElement('input');
+					input.type = "text";
+					input.setAttribute('value',data[0][a]);
+					div.append(input);
+					div.innerHTML += '<br>';
+					if(first){
+						first = false;
+					}
+				}
+				let btn = document.createElement('button');
+				btn.innerHTML = 'button';
+				div.append(btn);
+				document.querySelector('body').append(div);
+				
 				let ul = document.createElement('ul');
 				for(a in data[0]){
 					let li = document.createElement('li');
