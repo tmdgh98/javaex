@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>Hello, 곽승호입니다.</h1>
+	<div id = "result"></div>
+	<script>
+		let xhtp = new XMLHttpRequest();
+		xhtp.onreadystatechange = function(){
+			if(xhtp.readyState == 4 && xhtp.status==200){
+				console.log(xhtp.responseText);
+				let data = JSON.parse(xhtp.responseText);
+				//let data = xhtp.responseText;
+				console.log(data);
+				let table, tr, td, text;
+				table = document.createElement('table');
+				table.border = '1';
+				tr = document.createElement('tr');
+                for (p in data[0]) {
+                    td = document.createElement('th');
+                    text = document.createTextNode(p);
+
+                    td.append(text)
+                    tr.append(td);
+                }
+                table.append(tr);
+                
+				for(a of data){	
+					tr = document.createElement('tr');
+					for(b in a){
+						td = document.createElement('td');
+                        text = document.createTextNode(a[b]);
+
+                        td.append(text)
+                        tr.append(td);
+					}
+					table.append(tr);
+				}
+				console.log(data[0]);
+				//document.write('</h1>');
+				let show = document.querySelector('body');
+	            show.append(table);
+	            
+	            let tag = "<ul>";
+	            for(let i =0;i<data.length; i++){
+	            	tag += "<li>" + data[i].id +", <a href = 'empInfo.jsp?id=" + data[i].id + "'>"+ data[i].firstName + "</a></li>";
+	            }
+	            tag += "</ul>"
+	            
+	            document.getElementById("result").innerHTML = tag;
+			}
+		} 
+		xhtp.open('get','GetEmployeeListServ');
+		xhtp.send();
+	</script>
+</body>
+</html>
