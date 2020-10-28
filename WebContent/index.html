@@ -3,10 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+	div#result{
+		display: inline-block;
+		width: 200px;
+		border: 1px solid yellow;
+	}
+	div#detail{
+		position:absolute;
+		
+		left:300px;
+		display:inline-block;
+		width:250px;
+		border: 1px solid yellow;
+	}
+	lable{
+		display: inline
+	}
+</style>
 </head>
 <body>
 	<h1>Hello, 곽승호입니다.</h1>
-	<div id = "result"></div>
+	<div id = 'result'></div>
+	<div id = 'detail'>
+		<p>상세정보</p>
+		<label for='id'>ID:</label>
+		<input type='text' name="id" id="id" value="100"><br>
+		<label for='id'>fName:</label>
+		<input type='text' name="fName" id="fName" value="100"><br>
+		<label for='id'>lName:</label>
+		<input type='text' name="lName" id="lName" value="100"><br>
+		<label for='id'>email:</label>
+		<input type='text' name="email" id="email" value="100"><br>
+		<label for='id'>salary:</label>
+		<input type='text' name="salary" id="salary" value="100"><br>
+	</div>
 	<script>
 		let xhtp = new XMLHttpRequest();
 		xhtp.onreadystatechange = function(){
@@ -46,15 +77,60 @@
 	            
 	            let tag = "<ul>";
 	            for(let i =0;i<data.length; i++){
-	            	tag += "<li>" + data[i].id +", <a href = 'empInfo.jsp?id=" + data[i].id + "'>"+ data[i].firstName + "</a></li>";
+	            	tag += "<li id="+data[i].id+">" + data[i].id +", <a href = 'empInfo.jsp?id=" + data[i].id + "'>"+ data[i].firstName + "</a></li>";
 	            }
 	            tag += "</ul>"
 	            
 	            document.getElementById("result").innerHTML = tag;
+	            
+	            mouseOverFunc();
+	            mouseOutFunc();
 			}
 		} 
 		xhtp.open('get','GetEmployeeListServ');
 		xhtp.send();
+		
+		//mouseover 이벤트
+		function mouseOverFunc(){
+			
+			let lis = document.getElementsByTagName('li');
+			for(let i = 0; i<lis.length; i++){
+				lis[i].onmouseover = function(){
+					this.style.background = 'yellow';
+					//console.log(this.id);
+					
+					getEmpInfo(this.id);					
+				}
+			}
+			
+		}
+		function mouseOutFunc(){
+			let lis = document.getElementsByTagName('li');
+			for(let i = 0; i<lis.length; i++){
+				lis[i].onmouseout = function(){
+					this.style.background = '';
+				}
+			}
+		}
+		
+		function getEmpInfo(id) {
+			let xhtp = new XMLHttpRequest();
+			xhtp.onreadystatechange = function() {
+				if(xhtp.readyState == 4 && xhtp.status==200){
+					let data = xhtp.response;
+					//console.log(data);
+					document.getElementById('id').value = data[0].id;
+					document.getElementById('fName').value = data[0].firstName;
+					document.getElementById('lName').value = data[0].lastName;
+					document.getElementById('email').value = data[0].email;
+					document.getElementById('salary').value = data[0].salary;
+					
+				}
+			}
+			xhtp.responseType = 'json';
+			xhtp.open('get','GetEmpInfoServlet?id='+id);
+			xhtp.send();
+		}
 	</script>
 </body>
 </html>
