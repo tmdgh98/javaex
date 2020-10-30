@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>traversing</title>
+    <script src="jquery-3.5.1.min.js"></script>
+    <style>
+        input{
+            display:block;
+        }
+    </style>
+    <script>
+        let persons = [];
+        $(document).ready(function(){
+            $('#ok').on('click',function(){
+                let name = $('input[name="name"]').val();
+                let age = $('input[name="age"]').val();
+                let score = $('input[name="score"]').val();
+
+                let person = {};
+                person.name = name;
+                person.age = age;
+                person.score = score;
+                persons.push(person);
+                
+            console.log(persons);
+            });
+            $('#create').on('click',function(){
+                if($('table').length==0){
+                    $('#show').append($('<table id="tbl" border =1 />').append('<tr />'));
+                    $('tr').append($('<th />').html('이름'));
+                    $('tr').append($('<th />').html('나이'));
+                    $('tr').append($('<th />').html('점수'));
+                    $('tr').append($('<th />').html('버튼'));
+                }
+
+                persons.forEach(function(item, idx){
+                    let tr = $('<tr />');
+                    for(field in item){
+                        tr.append($('<td />').html(item[field]));
+                    }
+                    tr.append($('<td />').append($('<button />').html('OK')));
+                    $('#tbl').append(tr);
+                    $('td>button').on('click',function(){
+                        $(this).parent().parent().remove();
+                        //('tr:eq(0)') == ('tr'),eq(0)
+                        console.log($('#tbl').find('tr:eq(0)'));
+                        // alert($('#tbl').children().eq(1).children().eq(1).first().html());
+                    })
+                })
+
+                persons = [];
+            })
+        })
+    </script>
+</head>
+<body>
+    <div id="input">
+        <input type="text" name="name" value="Kwak">
+        <input type="text" name="age" value="31">
+        <input type="text" name="score" value="100">
+        <button id="ok">OK</button>
+    </div>
+    <button id="create">생성</button>
+    <div id="show"></div>
+</body>
+</html>

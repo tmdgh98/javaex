@@ -70,26 +70,26 @@
 				console.log(xhtp.responseText);
 				let data = JSON.parse(xhtp.responseText);
 				console.log(data);
-				console.log(data[0].id)
-				document.getElementById('eid').value = data[0].id;
-				document.getElementById('fName').value = data[0].firstName;
-				document.getElementById('lName').value = data[0].lastName;
-				document.getElementById('salary').value = data[0].salary;
+				console.log(data.id)
+				document.getElementById('eid').value = data.id;
+				document.getElementById('fName').value = data.firstName;
+				document.getElementById('lName').value = data.lastName;
+				document.getElementById('salary').value = data.salary;
 				let option = document.querySelectorAll('option');
 				
 				for(a of option){
-					if(a.value==data[0].jobId){
+					if(a.value==data.jobId){
 						a.setAttribute('selected','true');
 					}
 				}
 				
 				let div = document.createElement('div');
 				div.innerHTML="";
-				for(a in data[0]){
+				for(a in data){
 					div.innerHTML += a + " "; 
 					let input = document.createElement('input');
 					input.type = "text";
-					input.setAttribute('value',data[0][a]);
+					input.setAttribute('value',data[a]);
 					if(a=='id'){
 						input.setAttribute('readonly','true');
 					}
@@ -102,9 +102,9 @@
 				document.querySelector('#a').append(div);
 				
 				let ul = document.createElement('ul');
-				for(a in data[0]){
+				for(a in data){
 					let li = document.createElement('li');
-					li.innerHTML = a +" : "+data[0][a];
+					li.innerHTML = a +" : "+data[a];
 					ul.append(li);
 				}
 				document.getElementById("show").append(ul);
@@ -121,12 +121,12 @@
 			let lName = document.getElementById('lName').value;
 			let salary = document.getElementById('salary').value;
 			let job = document.getElementById('job').value;
-			let para = 'eid='+eid+'&fName='+fName+'&lName='+lName+'&salary='+salary+'&job='+job;
+			let para = 'id='+eid+'&firstName='+fName+'&lastName='+lName+'&salary='+salary+'&jobId='+job;
 			let xhttp = new XMLHttpRequest();			
 			xhttp.onreadstatechange = function(){
 				if(xhttp.readyState == 4 && xhttp.status==200){
 					console.log(xhttp.responseText);
-					location.href = "index.html";
+					location.herf = "index.html";
 					
 				}
 			}

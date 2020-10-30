@@ -30,7 +30,7 @@ public class GetEmpInfoServlet extends HttpServlet {
 		String empId = request.getParameter("id");
 		EmpDAO dao = new EmpDAO();
 		Employee emp = dao.getEmpInfo(empId);
-		String json = "[{";
+		String json = "{";
 		json += "\"id\":\""+emp.getEmployeeId()+"\",";
 		json += "\"firstName\":\""+emp.getFirstName()+"\",";
 		json += "\"lastName\":\""+emp.getLastName()+"\",";
@@ -42,7 +42,7 @@ public class GetEmpInfoServlet extends HttpServlet {
 		json += "\"commissionPct\":\""+emp.getCommissionPct()+"\",";
 		json += "\"managerId\":\""+emp.getManagerId()+"\",";
 		json += "\"departmentId\":\""+emp.getDepartmentId()+"\"";
-		json += "}]";
+		json += "}";
 		
 		response.getWriter().append(json);
 	}

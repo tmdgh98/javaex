@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>input</title>
+    <style>
+        input{
+            display: block;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#ok').on('click',function(){
+                // $('input').eq(0)
+                // $('input[name="title"]').val('제목1');
+                // $('input[name="content"]').val('내용1');
+                // $('input[name="writer"]').val('작성자1');
+
+                let title = $('input[name="title"]').val();
+                let content = $('input[name="content"]').val();
+                let writer = $('input[name="writer"]').val();
+                // console.log(title + " "+ content+" "+ writer);
+
+                $('#result').append($('<li />').html(title + ", " + content+", "+writer));
+                // console.log($('table'));
+                let tags = [['title','제목'],['content','내용'],['writer','작성자']];
+                if($('table').length==0){
+                    $('#result').append($('<table border="1"; id="tbl" />'));
+                    $('table').attr('border','1');
+                    let tr = $('<tr />');
+                    for(a of tags){
+                        tr.append($('<th />').html(a[1]));
+                    }
+                    $('table').append(tr);
+                }
+                let tr = $('<tr />');
+                for(a of tags){
+                    tr.append($('<td />').html($('input[name="'+a[0]+'"]').val()));
+                }
+                $('table').append(tr);
+            })
+        });
+    </script>
+</head>
+<body>
+    <div id="input">
+        <input type="text" name="title" value="가나다">
+        <input type="text" name="content" value="abc">
+        <input type="text" name="writer" value="123">
+        <button id="ok">저장</button>
+    </div>
+    <div id="result"></div>
+</body>
+</html>

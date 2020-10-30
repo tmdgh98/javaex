@@ -113,7 +113,7 @@ public class EmpDAO {
 		return memberPerDept;
 	}
 	
-	public void updateEmpInfo(String eid, String f, String j, String s) {
+	public void updateEmpInfo(String eid, String f, String l, String s, String j) {
 		conn = DBconnect.getConnection();
 		String sql = "update employees set salary = ?, job_id = ? where employee_id = ?";
 		try {

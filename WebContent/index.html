@@ -37,6 +37,7 @@
 		<input type='text' name="email" id="email" value="100"><br>
 		<label for='id'>salary:</label>
 		<input type='text' name="salary" id="salary" value="100"><br>
+		
 	</div>
 	<script>
 		let xhtp = new XMLHttpRequest();
@@ -119,11 +120,11 @@
 				if(xhtp.readyState == 4 && xhtp.status==200){
 					let data = xhtp.response;
 					//console.log(data);
-					document.getElementById('id').value = data[0].id;
-					document.getElementById('fName').value = data[0].firstName;
-					document.getElementById('lName').value = data[0].lastName;
-					document.getElementById('email').value = data[0].email;
-					document.getElementById('salary').value = data[0].salary;
+					document.getElementById('id').value = data.id;
+					document.getElementById('fName').value = data.firstName;
+					document.getElementById('lName').value = data.lastName;
+					document.getElementById('email').value = data.email;
+					document.getElementById('salary').value = data.salary;
 					
 				}
 			}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="jquery-3.5.1.min.js"></script>
+    <script>
+        // $(document).ready(function(){
+        //     $('#show').html('hello');
+        // });
+        // $(document).ready(function(){
+        //     console.log('hi');
+        // })
+        $(document).ready(main);
+
+        function main() {
+            for(let i = 0; i<5 ; i++){
+                let btn = $('<button />').html('OK');
+                $('#show').append(btn);
+            }
+
+            $('button').eq(2).click(function(){
+                window.alert('button clicked');
+            })
+
+            $('button').on('mouseover',function(){
+                $(this).css('background', 'blue');
+            });
+
+            $('button').on('mouseout',function(){
+                $(this).css('background', '');
+            });
+
+            // $('button').on({
+            //     'focus' : function(){console.log('focus')},
+            //     'blur' : function(){console.log('blur')}
+            // })
+
+            let events ={
+                'focus' : function(){console.log('focus')},
+                'blur' : function(){console.log('blur')}
+            }
+            $('button').on(events);
+        }
+    </script>
+</head>
+<body>
+    <div id="show"></div>
+</body>
+</html>

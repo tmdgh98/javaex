@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<script>
+    //json > obj > json
+	let obj = {
+			name : "kwak",
+			age : 31,
+			marriage : false,
+            birth : new Date(),
+            showInfo : function(){
+                return "name : "+this.name+", age : "+this.age;
+            }
+	}
+    // console.log(obj.showInfo());
+	// console.log(obj);
+	// let obj = JSON.parse(json);
+    // let json = JSON.stringify(obj)
+    let json = JSON.stringify(obj, ["name", "age"]);
+	console.log(json);
+    // obj = JSON.parse(json);
+    // console.log(obj);
+    // obj = JSON.parse(json, function(k,v){
+    //     // console.log(k, v);
+    //     console.log(v);
+    //     let result = k=='birth'? new Date(v) : v;
+    //     return result;
+    // })
+    // obj = JSON.parse(json, (k,v)=>{
+    //         return k=='birth'? new Date(v) : v;
+    // })
+    
+    // console.log(obj);
+</script>
+</body>
+</html>

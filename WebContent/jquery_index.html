@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="public/jquery-3.5.1.min.js"></script>
+<script src="js/index.js"></script>
+<script>
+	$(document).ready(function(){
+		$.ajax({
+			url:'GetEmployeeListServ',
+			success: showList,
+			error:function(reject){
+				console.log(new Error(reject));
+			},
+			dataType: 'json'
+		});
+	});
+
+</script>
+<style>
+	div#result{
+		display: inline-block;
+		width: 200px;
+		border: 1px solid yellow;
+	}
+	div#detail{
+		position:absolute;
+		
+		left:300px;
+		display:inline-block;
+		width:250px;
+		border: 1px solid yellow;
+	}
+	lable{
+		display: inline
+	}
+</style>
+</head>
+<body>
+	<h1>Hello, 곽승호입니다.</h1>
+	<div id = 'result'></div>
+	<div id = 'detail'>
+		<p>상세정보</p>
+		<label for='id'>ID:</label>
+		<input type='text' name="id" id="id" value="100"><br>
+		<label for='fName'>fName:</label>
+		<input type='text' name="fName" id="fName" value="100"><br>
+		<label for='lName'>lName:</label>
+		<input type='text' name="lName" id="lName" value="100"><br>
+		<label for='email'>email:</label>
+		<input type='text' name="email" id="email" value="100"><br>
+		<label for='salary'>salary:</label>
+		<input type='text' name="salary" id="salary" value="100"><br>
+		<label for='jobId'>jobId:</label>
+		<input type='text' name="jobId" id="jobId" value="100"><br>
+		
+	</div>
+	<script>
+		
+	</script>
+</body>
+</html>
