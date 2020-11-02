@@ -9,17 +9,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 /**
- * Servlet implementation class datatable
+ * Servlet implementation class DataTableServletJSON
  */
-@WebServlet("/datatable")
-public class datatable extends HttpServlet {
+@WebServlet("/DataTableServletJSON")
+public class DataTableServletJSON extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public datatable() {
+    public DataTableServletJSON() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -28,27 +31,28 @@ public class datatable extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		// {"draw":1, "recordsTotal": 57, "recordsFiltered": 57,
-//			"data": [[ val1, va2, val3, val4, val5, val6],[],[],[],[]
-		// ]}
 		EmpDAO dao = new EmpDAO();
-		List<Employee> employees = dao.getEmpList();
-		int dataCnt = employees.size();
-		String json = "{\"draw\":1, \"recordsTotal\": "+ dataCnt+", \"recordsFiltered\": "+dataCnt+",";
-		json += "\"data\": [";
-		for(int i=0; i<dataCnt; i++) {
-			if(i!=0) {
-				json+=",";
-			}
-			json += "[";
-		
-			json += ""+employees.get(i).getEmployeeId()+",\""+employees.get(i).getFirstName()+"\",\""+employees.get(i).getEmail()+"\",\""+employees.get(i).getPhoneNumber()+"\",\""+employees.get(i).getDepartmentId()+"\","+employees.get(i).getSalary();
+		List<Employee> list = dao.getEmpList();
+		int dataCnt = list.size();
+		JSONObject obj = new JSONObject();
+		obj.put("draw", 1);
+		obj.put("recordsTotal", dataCnt);
+		obj.put("recordsFiltered", dataCnt);
+		JSONArray oAry = new JSONArray();
+		JSONArray iAry;
+		for(Employee emp : list) {
+			iAry = new JSONArray();
+			iAry.add(emp.getEmployeeId());
+			iAry.add(emp.getFirstName());
+			iAry.add(emp.getEmail());
+			iAry.add(emp.getPhoneNumber());
+			iAry.add(emp.getHireDate());
+			iAry.add(emp.getSalary());
 			
-			json += "]";
+			oAry.add(iAry);
 		}
-		json += "]}";
-		response.getWriter().append(json);
+		obj.put("data", oAry);
+		response.getWriter().append(obj.toString());
 	}
 
 	/**

@@ -17,6 +17,29 @@ public class EmpDAO {
 	ResultSet rs;
 	Connection conn;
 	
+	public void makeSchedule(FullCalendar cal) {
+		conn = DBconnect.getConnection();
+		String sql = "insert into fullcalendar values(?,?,?)";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, cal.getTitle());
+			psmt.setString(2, cal.getStartDate());
+			psmt.setString(3, cal.getEndDate());
+			int r = psmt.executeUpdate();
+			System.out.println(r+"건 입력되었습니다.");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public Employee getEmpInfo(String id) {
 		conn = DBconnect.getConnection();
 		Employee emp = new Employee();
@@ -52,6 +75,54 @@ public class EmpDAO {
 		return emp;
 	}
 	
+	public List<FullCalendar> getSchedules(){
+		conn = DBconnect.getConnection();
+		List<FullCalendar> list = new ArrayList<FullCalendar>();
+		String sql = "select * from fullcalendar";
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while(rs.next()) {
+				FullCalendar cal = new FullCalendar(rs.getString("title"), rs.getString("start_date"), rs.getString("end_date"));
+				
+				list.add(cal);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return list;
+	}
+	public void deleteSchedule(String title, String start) {
+		conn = DBconnect.getConnection();
+		String sql ="delete from fullcalendar where title =? and substr(start_date,1,10)=?";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, title);
+			psmt.setString(2, start);
+			int r = psmt.executeUpdate();
+			System.out.println(r+"건 삭제했습니다");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 	public List<Employee> getEmpList(){
 		conn = DBconnect.getConnection();
 		List<Employee> employees = new ArrayList<Employee>();
