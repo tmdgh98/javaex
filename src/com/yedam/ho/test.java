@@ -13,5 +13,6 @@ public class test {
 		System.out.println(aa.size());
 		String a = "14124";
 		a.length();
+	
 	}
 }
