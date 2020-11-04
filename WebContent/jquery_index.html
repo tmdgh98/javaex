@@ -35,6 +35,10 @@
 	lable{
 		display: inline
 	}
+	.aaa bbb{
+		background-color: black;
+		color: aqua;
+	}
 </style>
 </head>
 <body>
@@ -56,8 +60,9 @@
 		<input type='text' name="jobId" id="jobId" value="100"><br>
 		
 	</div>
+	<div class="abc bbb"> aaaaaaaa </div>
 	<script>
-		
+		$('.aaa').addClass('bbb');
 	</script>
 </body>
 </html>

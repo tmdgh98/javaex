@@ -14,10 +14,36 @@ public class ProductDAO {
 	private PreparedStatement psmt;
 	private ResultSet rs;
 	private String sql;
-
-	public List<Product> getProductList(){
+	
+	
+	public Product getProduct(String itemNo) {
 		conn = DBconnect.getConnection();
-		sql = "select * from product";
+		sql = "select * from product where item_no =?";
+		Product pr = null;
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, itemNo);
+			rs = psmt.executeQuery();
+			while(rs.next()) {
+				 pr = new Product(rs.getString("item_no"),rs.getString("item_name"),rs.getInt("price"),rs.getString("item_desc"),rs.getDouble("like_it"),rs.getString("category"),rs.getString("item_img"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return pr;
+		
+	}
+	public List<Product> getProductList(String category){
+		conn = DBconnect.getConnection();
+		sql = "select * from product where category = nvl(\'"+category+"\', category)";
 		List<Product> list = new LinkedList<Product>();
 		try {
 			psmt = conn.prepareStatement(sql);

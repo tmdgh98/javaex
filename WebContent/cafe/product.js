@@ -2,13 +2,16 @@
 $.ajax({
 	url:'../GetProductServlet',
 	dataType: 'json',
+	data:{'category' : category},
 	success:function(result){
-		console.log(result);
+		//console.log('<%=category>');
 		for(obj of result){
 			createRow(obj);
 		}
 	}
 });
+
+
 // <div class="col-lg-4 col-md-6 mb-4">
 //             <div class="card h-100">
 //               <a href="#">
@@ -29,13 +32,13 @@ $.ajax({
 function createRow(obj){
 	let div1 = $('<div />').attr('class','col-lg-4 col-md-6 mb-4');
 	let div2 = $('<div />').attr('class','card h-100');
-	let div2_a = $('<a />').attr('href','#');
-	let img = $('<img />').attr({'class':'card-img-top','src':"http://placehold.it/700x400"});
+	let div2_a = $('<a />').attr('href','getProd.jsp?item_no='+obj.itemNo);
+	let img = $('<img />').attr({'class':'card-img-top','src':"../images/"+obj.itemImg});
 	div2_a.append(img);
 	div2.append(div2_a);
 	let div2_div = $('<div />').attr('class','card-body');
 	let h4 = $('<h4 />').attr('class','card-title');
-	let div_a = $('<a />').attr('href','#');
+	let div_a = $('<a />').attr('href','getProd.jsp?item_no='+obj.itemNo);
 	div_a.html(obj.itemName);
 	h4.append(div_a);
 	div2_div.append(h4);
@@ -75,5 +78,16 @@ function createRow(obj){
 	div2.append(div2_div2);
 	div1.append(div2);
 	$('div.col-lg-9>div.row').append(div1);
-	console.log($('div.col-lg-9>div.row'));
+	//console.log($('div.col-lg-9>div.row'));
+}
+
+let a = $('#navbarResponsive>ul>li>a');
+console.log(a);
+ for(e of a){
+	$(e).on('click',function(){
+		$('ul>li.nav-item.active').removeClass('active');
+		console.log($('ul>li.nav-item.active'));
+		$(this).parent().addClass('active');
+		
+	})
 }

@@ -1,25 +1,26 @@
 package com.yedam.cafe;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
+
 /**
- * Servlet implementation class PutProductServlet
+ * Servlet implementation class GetProduct
  */
-@WebServlet("/PutProductServlet")
-public class PutProductServlet extends HttpServlet {
+@WebServlet("/GetProduct")
+public class GetProduct extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PutProductServlet() {
+    public GetProduct() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -28,24 +29,17 @@ public class PutProductServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		
+		ProductDAO dao = new ProductDAO();
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=utf-8");
-		ProductDAO dao = new ProductDAO();
-		String num = request.getParameter("itemNo");
-		String name = request.getParameter("itemName");
-		String price = request.getParameter("price");
-		String desc = request.getParameter("itemDesc");
-		String like = request.getParameter("likeIt");
-		String img = request.getParameter("itemImg");
+		String itemNo = request.getParameter("id");
+		Product p = dao.getProduct(itemNo);
+//		A vo = new A();
+		JsonConfig conf = new JsonConfig();
+		String result = JSONObject.fromObject(p, conf).toString();
 		
-		dao.insertProduct(num, name, price, desc, like, img);
-		//response.getWriter().append("success");
-		PrintWriter out = response.getWriter();
-//		out.print("<script>alert(\"OK\")</script>");
-		out.print("<script>location.href=\"cafe/index.html\";</script>");
+		response.getWriter().append(result);
 	}
 
 	/**

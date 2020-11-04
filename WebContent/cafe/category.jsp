@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,9 +18,22 @@
 
   <!-- Custom styles for this template -->
   <link href="css/shop-homepage.css" rel="stylesheet">
+	<%
+		String category = request.getParameter("category");
+	%>
 	<script>
-		let category = null;
+		console.log("<%=category%>");
+		let category ="<%=category%>";
 	</script>
+	<style>
+		div{
+		}
+		#a{
+		}
+		li.nav_afdsafd{
+		
+		}
+	</style>
 </head>
 
 <body>
