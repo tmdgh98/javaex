@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>map.html</title>
+    <script src="../js/jquery-3.5.1.min.js"></script>
+    <script>
+        let data = [];
+        $(gogo)
+
+        function gogo() {
+            $.ajax({
+                url: 'members.json',
+                dataType: 'json',
+                success: success
+            })
+        }
+
+        function success(aa) {
+            data = aa;
+            $('#score').on('change', getScore);
+        }
+
+        function getScore() {
+            let score = $('#score').val();
+            $('body').append($('<div />').attr('id', 'show'));
+            makeList(score);
+            // console.log(data);
+        }
+
+        function makeList(n) {
+            $('#show').empty();
+            let ul, li;
+            $('#show').append($('<h1 />').html('성적!!!!'))
+            let list = $.grep(data, function (d, i) {
+
+                num = Number(n);
+                return n=='F'?d.score<60 : d.score<(num+10)&&d.score>=num;
+                
+            }).map(function (v, idx) {
+                if (n == 90) n = 'A';
+                else if (n == 80) n = 'B';
+                else if (n == 70) n = 'C';
+                else if (n == 60) n = 'D';
+                else if (n == 100) n = '만점!!';
+
+                return v.first_name + " : " + n;
+            })
+            // console.log(list);
+
+            ul = $('<ul />');
+            for (name of list) {
+                li = $('<li />').html(name);
+                ul.append(li);
+            }
+            $('#show').append(ul);
+
+        }
+    </script>
+</head>
+
+<body>
+    <select id="score">
+        <option value="F">60미만</option>
+        <option>60</option>
+        <option>70</option>
+        <option>80</option>
+        <option>90</option>
+        <option>100</option>
+    </select>
+</body>
+
+</html>

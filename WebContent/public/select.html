@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>select</title>
+    <script src="jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(test);
+
+        function test() {
+            $('#left').on('click', left);
+            $('#right').on('click', right);
+        }
+
+        function left() {
+            // $('#plus').append($('#minus>option:selected').clone());
+            let op = $('#plus>option');
+            let select = $('#minus>option:selected');
+            for(let i =0; i<op.length; i++){
+                if($(op[i]).val()>select.val()){
+                    $(op[i]).before($(select).clone());
+                    break;
+                };
+                if(i==op.length-1){
+                    $('#plus').append(select.clone());
+                }
+            }
+            $('#minus>option:selected').remove();
+        }
+
+        function right() {
+            let op = $('#minus>option');
+            let select = $('#plus>option:selected');
+            for(let i =0; i<op.length; i++){
+                if($(op[i]).val()>select.val()){
+                    $(op[i]).before($(select).clone());
+                    break;
+                };
+                if(i==op.length-1){
+                    $('#minus').append(select.clone());
+                }
+            }
+            $('#plus>option:selected').remove();
+        }
+    </script>
+</head>
+
+<body>
+    <select name="" id="plus" size=10>
+        <option>option1</option>
+        <option>option2</option>
+        <option>option3</option>
+        <option>option4</option>
+        <option>option5</option>
+    </select>
+    <button id="left"><<</button> 
+    <button id="right">>></button>
+    <select name="" id="minus" size=10>
+        <option>option6</option>
+        <option>option7</option>
+        <option>option8</option>
+        <option>option9</option>
+        <option>option10</option>
+    </select>
+
+</body>
+
+</html>

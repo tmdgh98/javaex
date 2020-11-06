@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>each.html</title>
+    <script src="../js/jquery-3.5.1.min.js"></script>
+    <script>
+        let members = [{name:'hong', age:25},{name:'kwak', age:31},{name:'chan', age:30},{name:'min', age:19},{name:'ho', age:27}];
+        let sum =0;
+        function callBackFunc(idx,value){
+            //console.log(idx,value,this);
+            let li = $('<li />').html(value.name+ " : "+this.age);
+            $('ul').append(li);
+        }
+        // $(document).ready(); $(function(){}); 같은의미
+        $(function(){
+            $('#show').append($('<ul />'));
+            $.each(members, callBackFunc);
+
+            let names = $.map(members, (value,idx)=>{
+                console.log(value,idx,this);
+                return value.age>25 ? value.name : null;
+            });
+
+            console.log(names.join(', '));
+
+            names = $.grep(members, (value, idx) => {
+                return idx >0;
+            }).map((value, idx) => {
+                return value.name;
+            })
+            console.log(names.join(", "));
+            $('ul>li').each((idx, value) => {
+                console.log($(value).html());
+                if(idx%2 == 1){
+                    $(value).css({'background':'black','color':'white'})//.css('color','white');
+                }
+            });
+        })
+    </script>
+</head>
+<body>
+    <div id="show"></div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>grep.html</title>
+    <script src="../js/jquery-3.5.1.min.js"></script>
+    <script>
+        $(gg);
+
+        function gg() {
+            $.ajax({
+                url: 'members.json',
+                dataType: 'json',
+                success: success
+            })
+        };
+
+        function success(data) {
+            // data = $(data).map(function(a,b){
+            //     return a<10? b : null;
+            // }).grep((value, idx) => {
+            //     return value.gender;
+            // })
+            // console.log(data);
+            // let dd = $(data).grep(function(){
+            //     console.log("aa")
+            //     // return idx >= 90 && value.gender == 'Female';
+            // })
+
+            // console.log(dd.join(", "));
+
+
+            $('#gender').on('change', gd)
+
+            function gd() {
+                $('#show').empty();
+                let gen = $('#gender').val();
+                console.log(gen);
+                let dd = $.grep(data, (value, idx) => {
+                    return idx >= 90 && value.gender == gen;
+                }).map(function (a, b) {
+                    return a.first_name;
+                })
+                $.each(dd, function (idx, value) {
+                    $('#show').append($('<p />').html(value))
+                })
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <select name="" id="gender">
+        <option value="Female">여성</option>
+        <option value="Male">남성</option>
+    </select>
+    <div id="show"></div>
+</body>
+
+</html>
