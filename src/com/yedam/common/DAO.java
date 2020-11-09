@@ -25,7 +25,7 @@ public class DAO {
 	}
 	
 	public void disconnect() {
-		if(conn!= null) {
+		if(conn != null) {
 			try {
 				conn.close();
 			} catch (SQLException e) {

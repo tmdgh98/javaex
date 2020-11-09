@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>comments.html</title>
+    <script src="../js/jquery-3.5.1.min.js"></script>
+    <script>
+        $.ajax({
+            url : '../CommentsServ',
+            data: {cmd:'selectAll'},
+            dataType : 'xml',
+            success : loadCommentResult,
+            error: function(){
+                console.log(new Error(reject));
+            }
+        })
+        //목록조회 콜백함수
+        function loadCommentResult(res){
+            let xmlDoc = res;
+            let code = xmlDoc.getElementsByTagName('code').item(0).firstChild.nodeValue;
+            if(code == 'success'){
+                let commentList = eval("("+xmlDoc.getElementsByTagName('data').item(0).firstChild.nodeValue+")");
+                let listDiv = document.getElementById('commentsList');
+                for(let i=0; i<commentList.length; i++){
+                    let commentDiv = makeCommentView(commentList[i]);
+                    listDiv.append(commentDiv);
+                }
+            }else if(code=='error'){
+                alert(xmlDoc.getElementsByTagName('data').item(0).firstChild.nodeValue);
+            }
+        }
+
+        function makeCommentView(comment){
+            let div = document.createElement('div');
+            div.setAttribute('id','c'+comment.id);
+            div.className='comment';
+            div.content = comment;
+            let str = '<strong>'+comment.name+'</strong> '+comment.content+
+            ' <input type="button" value ="수정" onclick="viewUpdateForm('+comment.id+')">'+
+            '<input type="button" value ="삭제" onclick="conformDelete('+comment.id+')">';
+            div.innerHTML = str;
+            return div;
+        }
+
+        //등록화면추가, 데이터베이스: 추가
+        function addComment(){
+            let name = document.addForm.name.value;
+            let content = document.addForm.content.value;
+            $.ajax({
+                url:'../CommentsServ',
+                data : {cmd : 'insert',
+                        name : name,
+                        content : content},
+                dataType : 'xml',
+                success : function(result){
+                    addResult(result);
+                },
+                error : function(){
+                    console.log(new Error(reject));
+                }
+            })
+        }
+        //글 등록 콜백
+        function addResult(res){
+            let xmlDoc = res;
+            let code = xmlDoc.getElementsByTagName('code').item(0).firstChild.nodeValue;
+            if(code=='success'){
+                let comment = eval('('+xmlDoc.getElementsByTagName("data").item(0).firstChild.nodeValue+')');
+                console.log(comment);
+                let listDiv = document.getElementById('commentsList');
+                let commentDiv = makeCommentView(comment);
+                listDiv.append(commentDiv);
+                //등록폼 화면 clear
+                document.addForm.name.value ="";
+                document.addForm.content.value ="";
+                alert('등록완료!!! [' + comment.id+']');
+            }else if(code=='error'){
+                alert(xmlDoc.getElementsByTagName('data').item(0).firstChild.nodeValue);
+            }         
+        }
+        //수정버튼 이벤트
+        function viewUpdateForm(commentId){
+            let commentDiv = document.getElementById('c'+commentId);
+            let updateFormDiv = document.getElementById('commentUpdate');
+            commentDiv.after(updateFormDiv);
+            updateFormDiv.style.display = 'block';
+            
+            //document.getElementsByName('id')[0].value = commentDiv.content.id;
+            //document.getElementsByName('name')[0].value = commentDiv.content.name;
+            updateForm.id.value = commentDiv.content.id;
+            updateForm.name.value = commentDiv.content.name;
+            updateForm.content.value = commentDiv.content.content;
+        }
+        //수정 ajax
+        function updateComment(){
+        	let id = updateForm.id.value;
+            let name = updateForm.name.value;
+            let content = updateForm.content.value;
+        	$.ajax({
+        		url:'../CommentsServ',
+        		data:{
+        			cmd : 'update',
+        			id : id,
+        			name : name,
+        			content : content,
+        		},
+        		success : function(result){
+        			reResult(result)
+        		},
+        		error : function(reject){
+        			console.log(new Error(reject));
+        		}
+        	})
+        }
+        function reResult(res){
+            let xmlDoc = res;
+            console.log(xmlDoc.getElementsByTagName('code').item(0).firstChild);
+            let code = xmlDoc.getElementsByTagName('code').item(0).firstChild.nodeValue;
+            if(code=='success'){
+                let comment = eval('('+xmlDoc.getElementsByTagName("data").item(0).firstChild.nodeValue+')');
+            	document.getElementById('c'+comment.id).remove();
+                let updateDiv = document.getElementById('commentUpdate');
+                let commentDiv = makeCommentView(comment);
+                updateDiv.before(commentDiv);
+                //등록폼 화면 clear
+                updateDiv.style.display = 'none';
+                alert('수정완료!!! [' + comment.id+']');
+            }else if(code=='error'){
+                alert(xmlDoc.getElementsByTagName('data').item(0).firstChild.nodeValue);
+            }         
+        }
+        function conformDelete(id){
+        	$.ajax({
+        		url:'../CommentsServ',
+        		data : {
+        			cmd : 'delete',
+        			id : id
+        		},
+        		success : function(data){
+        			delee(data,id)
+        		},
+        		error: function(){
+                    console.log(new Error(reject));
+        		}
+        	})
+        }
+        function delee(data,id){
+            let code = data.getElementsByTagName('code').item(0).innerHTML;
+            if(code=='success'){
+                document.getElementById('c'+id).remove();
+            }else if(code=='error'){
+                alert(xmlDoc.getElementsByTagName('data').item(0).firstChild.nodeValue);
+            }
+        }
+        function cancelUpdate(){
+            document.getElementById('commentUpdate').style.display = 'none';
+        }
+    </script>
+</head>
+
+<body>
+    <div id="commentsList"></div>
+    <!-- 등록화면 -->
+    <div id="commentAdd">
+        <form action="" name="addForm">
+            이름 : <input type="text" name="name" size="10"><br>
+            내용 : <textarea name="content" cols="20" rows="2"></textarea><br>
+            <input type="button" value="등록" onclick="addComment()">
+        </form>
+    </div>
+    <!-- 수정화면 -->
+    <div id="commentUpdate" style="display: none;">
+        <form action="" name="updateForm">
+            <input type="hidden" name="id" value="">
+            이름 : <input type="text" name="name" size="10"><br>
+            내용 : <textarea name="content" id="" cols="20" rows="2"></textarea><br>
+            <input type="button" value="변경" onclick="updateComment()">
+            <input type="button" value="취소" onclick="cancelUpdate()">
+        </form>
+    </div>
+    <form action="" id="abc"></form>
+    <script>
+        console.log(addForm, updateForm,abc);
+    </script>
+</body>
+
+</html>
